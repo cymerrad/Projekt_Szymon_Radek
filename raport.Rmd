@@ -2,7 +2,7 @@
 title: "Raport"
 author: Radosław Cymer Szymon Górka
 output:
-   html_document:
+   pdf_document:
     toc: true
     number_sections: true
 ---
@@ -12,8 +12,8 @@ output:
 library(PISA2012lite)
 library(dplyr)
 library(ggplot2)
+a <- PISA2012lite::student2012
 
-load("C:/Users/Profesional/Desktop/student2012.rda")
 countries <- student2012 %>% 
   distinct(CNT) 
   
