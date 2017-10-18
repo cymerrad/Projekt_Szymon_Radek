@@ -13,7 +13,7 @@ library(PISA2012lite)
 library(dplyr)
 library(ggplot2)
 
-load("C:/Users/Profesional/Desktop/student2012.rda")
+#load("C:/Users/Profesional/Desktop/student2012.rda")
 countries <- student2012 %>% 
   distinct(CNT) 
   
