@@ -5,8 +5,9 @@ output:
   html_document:
     number_sections: yes
     toc: yes
-  pdf_document:
-    toc: yes
+   pdf_document:
+    toc: true
+    number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -14,12 +15,9 @@ output:
 library(PISA2012lite)
 library(dplyr)
 library(ggplot2)
-a <- PISA2012lite::student2012
-
 #load("C:/Users/Profesional/Desktop/student2012.rda")
 #library(PISA2012lite)
 source("./sample_data_2.R")
-
 
 ```
 
