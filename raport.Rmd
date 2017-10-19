@@ -1,7 +1,10 @@
 ---
 title: "Raport"
-author: Radosław Cymer Szymon Górka
+author: "Radosław Cymer Szymon Górka"
 output:
+  html_document:
+    number_sections: yes
+    toc: yes
    pdf_document:
     toc: true
     number_sections: true
@@ -12,11 +15,9 @@ output:
 library(PISA2012lite)
 library(dplyr)
 library(ggplot2)
-a <- PISA2012lite::student2012
-
-countries <- student2012 %>% 
-  distinct(CNT) 
-  
+#load("C:/Users/Profesional/Desktop/student2012.rda")
+#library(PISA2012lite)
+source("./sample_data_2.R")
 
 ```
 
@@ -24,9 +25,16 @@ countries <- student2012 %>%
 
 
 ```{r, echo=FALSE, results='asis'}
-for (i in 1:3) {
-  print(ggplot2::qplot(i, i+1))
-  cat("\n\n\\pagebreak\n")
-  writeLines("#ValueForV")
+for (country in countries) {
+  cat('\n') 
+  cat("#", country, "\n") 
+  
+  data_from_country <- extract_data_by_country(country)
+  plots <- do_some_magic_on_Q40(extract_Q40_from_data(data_from_country))
+  
+  grid.arrange(males=plots[[1]], females=plots[[2]])
+  
+  cat('\n') 
+
 }
 ```
