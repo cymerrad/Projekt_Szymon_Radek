@@ -59,7 +59,7 @@ pisa <- PISA2012lite::student2012 %>%
     CNT
   ) %>%
   rename(gender = ST04Q01) %>% 
-  filter(CNT=="Norway")
+  filter(CNT=="Japan")
 pisa[] <- lapply(pisa, factor)
 # pick only 40th question
 only_40 <- pisa %>% select(
@@ -159,3 +159,15 @@ d <- a <- only_38_1 %>%
 grid_arrange_shared_legend(plot_bar(a), plot_bar(b), plot_bar(c), plot_bar(d))
 
 
+
+
+only_38_1 <- only_38 %>% 
+  filter(!is.na(ST96Q01),!is.na(ST96Q02), !is.na(ST96Q03), !is.na(ST96Q05)) %>% 
+  gather("question", "level", ST96Q01:ST96Q05) %>% 
+  group_by(question, level ) %>% 
+  summarise (n = n()) 
+  
+ggplot(only_38_1, aes(x=question,y=n, fill=factor(level, levels=c("definitely do this","probably do this",
+                                                                  "probably not do this" ,"definitely not do this")))) +
+  geom_bar(stat = "identity", position="stack")
+unique(only_38_1$level)

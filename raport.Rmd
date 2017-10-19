@@ -2,9 +2,6 @@
 title: "Raport"
 author: "Radosław Cymer Szymon Górka"
 output:
-  html_document:
-    number_sections: yes
-    toc: yes
    pdf_document:
     toc: true
     number_sections: true
@@ -14,27 +11,48 @@ output:
 
 library(PISA2012lite)
 library(dplyr)
+library(tidyr)
+library(stringr)
 library(ggplot2)
-#load("C:/Users/Profesional/Desktop/student2012.rda")
-#library(PISA2012lite)
-source("./sample_data_2.R")
+library(gridExtra)
+library(scales)
+library(grid)
+library(ggpubr)
+source("./functions.R")
 
 ```
 
-# R Markdown
 
 
 ```{r, echo=FALSE, results='asis'}
+pisa <- PISA2012lite::student2012
+countries <- unique(pisa$CNT)
+ 
 for (country in countries) {
   cat('\n') 
   cat("#", country, "\n") 
   
-  data_from_country <- extract_data_by_country(country)
-  plots <- do_some_magic_on_Q40(extract_Q40_from_data(data_from_country))
+  data <- extract_data_by_country_Q38(pisa,country) 
+  freq <- get_frequencies_Q38(data)
+ 
+  plot <- plot_bar_Q38(data)
   
-  grid.arrange(males=plots[[1]], females=plots[[2]])
-  
-  cat('\n') 
+  a <- plot_bar_gender__Q38(freq,"ST96Q01")
+  b <- plot_bar_gender__Q38(freq,"ST96Q02")
+  c <- plot_bar_gender__Q38(freq,"ST96Q03")
+  d <- plot_bar_gender__Q38(freq,"ST96Q05")
 
+  #
+ 
+  text <- "Opis pytań:  ST96Q01 = I press every button possible to find out what is wrong. zapanowac nad tym trzeba "
+  text.p <- ggparagraph(text = text, size = 9, color = "black")
+  p1 <- ggarrange(plot, text.p,
+                ncol = 2, nrow = 1)
+  p2 <- ggarrange(a,b,c,d,
+                ncol = 4, nrow = 1, common.legend = TRUE)                
+  print(ggarrange(p1, p2, ncol = 1, nrow = 1))
+
+  cat('\n')
 }
+
 ```
