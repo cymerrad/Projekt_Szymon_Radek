@@ -5,7 +5,7 @@ output:
   html_document:
     number_sections: yes
     toc: yes
-   pdf_document:
+  pdf_document:
     toc: true
     number_sections: true
 ---
