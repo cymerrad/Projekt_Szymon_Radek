@@ -14,10 +14,12 @@ output:
 library(PISA2012lite)
 library(dplyr)
 library(ggplot2)
+a <- PISA2012lite::student2012
 
 #load("C:/Users/Profesional/Desktop/student2012.rda")
 #library(PISA2012lite)
-source("./sample_data.R")
+source("./sample_data_2.R")
+
 
 ```
 
@@ -25,9 +27,16 @@ source("./sample_data.R")
 
 
 ```{r, echo=FALSE, results='asis'}
-for (i in 1:length(df_1_all)) {
-  print(jesus_christ_this_shit_sucks(df_1_all[[i]]))
-  cat("\n\n\\pagebreak\n")
-  writeLines("")
+for (country in countries) {
+  cat('\n') 
+  cat("#", country, "\n") 
+  
+  data_from_country <- extract_data_by_country(country)
+  plots <- do_some_magic_on_Q40(extract_Q40_from_data(data_from_country))
+  
+  grid.arrange(males=plots[[1]], females=plots[[2]])
+  
+  cat('\n') 
+
 }
 ```
