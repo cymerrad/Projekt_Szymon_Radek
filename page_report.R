@@ -46,6 +46,8 @@ get_data <- function(questions = c()) {
     rename(gender = ST04Q01)
 }
 
+unique(PISA2012lite::student2012$CNT)
+
 pisa <- PISA2012lite::student2012 %>% 
   select(
     ST04Q01, 
@@ -57,7 +59,7 @@ pisa <- PISA2012lite::student2012 %>%
     CNT
   ) %>%
   rename(gender = ST04Q01) %>% 
-  filter(CNT=="Poland")
+  filter(CNT=="Norway")
 pisa[] <- lapply(pisa, factor)
 # pick only 40th question
 only_40 <- pisa %>% select(
@@ -134,9 +136,9 @@ plot_a <- ggplot(q38a, aes(x=gender,y= freq,fill=level)) + geom_bar(stat = "iden
 
 
     
-  plot_bar <- function(data) {  
+plot_bar <- function(data) {  
     plot <- ggplot(data, aes(x=gender,y= freq,fill=level)) + geom_bar(stat = "identity") + 
-      scale_fill_manual(values=c("olivedrab", "olivedrab3", "firebrick2","red4")) + ggtitle("Female") +
+      scale_fill_manual(values=c("olivedrab", "olivedrab3", "firebrick2","red4")) + ggtitle(unique(data$question)) +
       geom_text(aes(label=paste0(sprintf("%.0f", freq*100),"%")),position=position_stack(vjust=0.5)) + 
       scale_y_continuous(labels = percent_format())
     return(plot)
