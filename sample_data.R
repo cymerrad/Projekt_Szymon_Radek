@@ -1,6 +1,8 @@
 library(PISA2012lite)
 library(dplyr)
+library(tidyr)
 library(stringr) # str_match
+library(ggplot2)
 # pisa <- PISA2012lite::student2012
 # 4 gender pisa$ST04Q01
 # 36 problem pisa$ST93Q01 / 3 / 4 / 6 / 7
@@ -43,24 +45,39 @@ observation_1_males <- only_40 %>%
   select(-gender) %>%
   summary()
 
-ugly_plot <- function(summarised_observation){
-  mini_matrices = list()
-  for(i in 1:ncol(summarised_observation)) {
-    column <- summarised_observation[,i]
-    groups <- str_match(column, "^(.*):(.*)$")
-    mini_matrix <- groups[,2:3]
-    mini_matrix <- trimws(mini_matrix)
-    
-    #mini_matrices <- append(mini_matrices, mini_matrix)
-    mini_matrices[[i]] <- mini_matrix
-  }
+observation_1_all <- only_40 %>%
+  select(-gender) %>%
+  summary()
+
+fix_data_by_column <- function(obs) {
+  obs <- as.matrix(obs)
   
-  par(mfrow=c(4,2), mar=c(1,1,1,1))
-  for(m in mini_matrices){
-    lbls <- m[,1]
-    slices <- as.numeric(m[,2])
-    pie(x = slices, labels = lbls, radius = 1)
-  }  
+  mini_matrices = list()
+  for(i in 1:ncol(obs) ){
+    column <- obs[,i]
+    groups <- str_match(column, "^(.*):(.*)$")
+    mini_mat <- groups[,2:3]
+    mini_mat <- trimws(mini_mat)
+    
+    mini_matrices[[i]] <- mini_mat
+  }
+    
+  return(mini_matrices)
 }
 
-ugly_plot(observation_1_females)
+jesus_christ_this_shit_sucks <- function(groups_and_values) {
+  df <- data.frame(
+    group = groups_and_values[,1],
+    value = groups_and_values[,2]
+  )
+  
+  bp <- ggplot(df, aes(x="", y=value, fill=group)) + geom_bar(width = 1, stat = "identity")
+  return(bp)
+  #pie <- bp + coord_polar("y", start = 0)
+  #return(pie)
+}
+
+df_1_females <- fix_data_by_column(observation_1_females)
+df_1_males <- fix_data_by_column(observation_1_males)
+df_1_all <- fix_data_by_column(observation_1_all)
+
