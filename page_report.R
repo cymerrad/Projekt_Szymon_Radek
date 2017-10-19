@@ -43,12 +43,18 @@ only_40_1 <- only_40 %>%
   
 only_40_m <- only_40_1 %>% 
   filter(gender=="Male") 
-ggplot(only_40_m, aes(x=question,y= freq,fill=level)) + geom_bar(stat = "identity")
+plot_m <- ggplot(only_40_m, aes(x=question,y= freq,fill=level)) + geom_bar(stat = "identity") + 
+  scale_fill_manual(values=c("olivedrab", "olivedrab3", "firebrick2","red4")) + ggtitle("Male") + 
+  geom_text(aes(label=paste0(sprintf("%.0f", freq*100),"%")),position=position_stack(vjust=0.5))  
+  
 only_40_f <- only_40_1 %>% 
   filter(gender=="Female") 
-ggplot(only_40_f, aes(x=question,y= freq,fill=level)) + geom_bar(stat = "identity")
+plot_f <- ggplot(only_40_f, aes(x=question,y= freq,fill=level)) + geom_bar(stat = "identity") + 
+  scale_fill_manual(values=c("olivedrab", "olivedrab3", "firebrick2","red4")) + ggtitle("Female") +
+  geom_text(aes(label=paste0(sprintf("%.0f", freq*100),"%")),position=position_stack(vjust=0.5)) 
   
-# kolory - 1,2 odcienie zielony; 3,4 - odcienie czerwonego
+grid.arrange(plot_m, plot_f, nrow=1, ncol=2)
 
 
+#===============================
 
