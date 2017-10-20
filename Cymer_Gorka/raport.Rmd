@@ -54,7 +54,7 @@ for (country in countries) {
                 ncol = 2, nrow = 1, widths = c(2,1))
   p2 <- ggarrange(a,b,c,d,
                 ncol = 4, nrow = 1, common.legend = TRUE) 
-  annotate_figure(p2, top = text_grob("Responses to question 38 by gender"))
+  p2 <- annotate_figure(p2, top = text_grob("Responses to question 38 by gender"))
   print(ggarrange(p1, p2, ncol = 1, nrow = 1))
   
   cat("\n")
