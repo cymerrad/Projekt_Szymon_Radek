@@ -2,12 +2,12 @@
 title: "Raport"
 author: "Radosław Cymer Szymon Górka"
 output:
-  html_document:
-    number_sections: yes
-    toc: yes
   pdf_document:
     toc: true
     number_sections: true
+  html_document:
+    number_sections: yes
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
