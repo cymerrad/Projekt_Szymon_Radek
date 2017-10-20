@@ -38,11 +38,11 @@ plot_bar_Q38 <- function(data) {
     group_by(question, level ) %>% 
     summarise (n = n()) %>% 
     mutate(freq = n / sum(n)) %>% 
-    select(-n) 
+    select(-n)
   
   p <- ggplot(data_tmp, aes(x=question,y=freq, fill=factor(level, levels=c("definitely do this","probably do this",
                                                                     "probably not do this" ,"definitely not do this")))) +
-    geom_bar(stat = "identity", position="stack") + ggtitle("Percantage of respons in question 38") +
+    geom_bar(stat = "identity", position="stack") + ggtitle("Responses to question 38") +
     scale_fill_manual(name = "Would you... ",values=c("olivedrab", "olivedrab3", "firebrick2","red4")) +
       geom_text(aes(label=paste0(sprintf("%.0f", freq*100),"%")),position=position_stack(vjust=0.5))  +
     scale_y_continuous(labels = percent_format()) +  theme(legend.position = "right", legend.title=element_text(size=9))

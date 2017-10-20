@@ -1,6 +1,6 @@
 ---
 title: "Raport"
-author: "Radosław Cymer Szymon Górka"
+author: "Szymon Górka, Radosław Cymer"
 output:
   pdf_document:
     toc: true
@@ -25,14 +25,11 @@ source("./functions.R")
 
 ```
 
-
-
 ```{r, echo=FALSE, results='asis'}
 pisa <- PISA2012lite::student2012
 countries <- unique(pisa$CNT)
  
 for (country in countries) {
-  cat('\n') 
   cat("#", country, "\n") 
   
   data <- extract_data_by_country_Q38(pisa,country) 
@@ -47,15 +44,19 @@ for (country in countries) {
 
   #
  
-  text <- "Opis pytań:  ST96Q01 = I press every button possible to find out what is wrong. zapanowac nad tym trzeba "
+  text <- paste("ST96Q01 = I press every button possible to find out what is wrong.",
+  "ST96Q02 = I think about what might have caused the problem and what I can do to solve it.",
+  "ST96Q03 = I read the manual.",
+  "ST96Q05 = I ask a friend for help.", sep="\n")
+  
   text.p <- ggparagraph(text = text, size = 9, color = "black")
   p1 <- ggarrange(plot, text.p,
                 ncol = 2, nrow = 1)
   p2 <- ggarrange(a,b,c,d,
                 ncol = 4, nrow = 1, common.legend = TRUE)                
   print(ggarrange(p1, p2, ncol = 1, nrow = 1))
-
-  cat('\n')
+  
+  cat("\n")
 }
 
 ```
