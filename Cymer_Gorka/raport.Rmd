@@ -1,11 +1,8 @@
 ---
 title: "Raport"
-author: "Szymon Górka, Radosław Cymer"
+author: "Szymon GĂłrka, RadosĹ‚aw Cymer"
 output:
   pdf_document:
-    toc: true
-    number_sections: true
-  html_document:
     number_sections: yes
     toc: yes
 ---
@@ -25,39 +22,42 @@ source("./functions.R")
 
 ```
 
-```{r, echo=FALSE, results='asis'}
+```{r, echo=FALSE,message=FALSE, warning=FALSE, results='asis'}
 pisa <- PISA2012lite::student2012
 countries <- unique(pisa$CNT)
- 
+plots <- list()
+i <-  1
 for (country in countries) {
-  cat("#", country, "\n") 
+  cat("\n#", country, "\n", sep="") 
   
   data <- extract_data_by_country_Q38(pisa,country) 
   freq <- get_frequencies_Q38(data)
  
   plot <- plot_bar_Q38(data)
   
-  a <- plot_bar_gender__Q38(freq,"ST96Q01")
-  b <- plot_bar_gender__Q38(freq,"ST96Q02")
-  c <- plot_bar_gender__Q38(freq,"ST96Q03")
-  d <- plot_bar_gender__Q38(freq,"ST96Q05")
+  a <- plot_bar_gender__Q38(freq,"ST96Q01",'A')
+  b <- plot_bar_gender__Q38(freq,"ST96Q02",'B')
+  c <- plot_bar_gender__Q38(freq,"ST96Q03",'C')
+  d <- plot_bar_gender__Q38(freq,"ST96Q05",'D')
 
-  #
- 
-  text <- paste("ST96Q01 = I press every button possible to find out what is wrong.",
-  "ST96Q02 = I think about what might have caused the problem and what I can do to solve it.",
-  "ST96Q03 = I read the manual.",
-  "ST96Q05 = I ask a friend for help.", sep="\n")
+  text <- paste("","Suppose that you have been sending text messages from your mobile phone for several weeks. Today, however, you can’t send text messages. You want to try to solve the problem.",
+  "What would you do?",
+  "A = I press every button possible to find out what is wrong.",
+  "B = I think about what might have caused the problem and what I can do to solve it.",
+  "C = I read the manual.",
+  "D = I ask a friend for help.", sep="\n")
   
   text.p <- ggparagraph(text = text, size = 9, color = "black")
   p1 <- ggarrange(plot, text.p,
-                ncol = 2, nrow = 1, widths = c(2,1))
+                ncol = 2, nrow = 1)
   p2 <- ggarrange(a,b,c,d,
                 ncol = 4, nrow = 1, common.legend = TRUE) 
   p2 <- annotate_figure(p2, top = text_grob("Responses to question 38 by gender"))
-  print(ggarrange(p1, p2, ncol = 1, nrow = 1))
-  
-  cat("\n")
+  #print(ggarrange(p1,p2, ncol = 1, nrow = 1))
+  print(p1)
+  print(p2)
+  i <<- i + 1
+  cat("  \n")
 }
 
 ```

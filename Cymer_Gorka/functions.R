@@ -17,16 +17,22 @@ get_frequencies_Q38 <- function(data) {
     select(-n) 
 }
   
-plot_bar_gender__Q38 <- function(data, q) {  
+plot_bar_gender__Q38 <- function(data, q, title = NULL) {  
   a <- data %>% 
     filter(question==q)
- 
-  plot <- ggplot(a, aes(x=gender,y= freq,fill=factor(level, levels=c("definitely do this","probably do this",
+  
+ if(is.null(title)) {
+    title = q
+ }
+    plot <- ggplot(a, aes(x=gender,y= freq,fill=factor(level, levels=c("definitely do this","probably do this",
                                                                      "probably not do this" ,"definitely not do this")))) + 
     geom_bar(stat = "identity") + 
     scale_fill_manual(name = "Would you...",values=c("olivedrab", "olivedrab3", "firebrick2","red4")) + ggtitle(unique(data$question)) +
     geom_text(aes(label=paste0(sprintf("%.0f", freq*100),"%")),position=position_stack(vjust=0.5)) + 
-    scale_y_continuous(labels = percent_format())  + theme(legend.title=element_text(size=9))
+    scale_y_continuous(labels = percent_format(),expand = c(0, 0))  + theme(legend.title=element_text(size=9)) + 
+    ggtitle(title) + theme_bw() + 
+      theme(legend.position="none",panel.border = element_blank(), panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
   return(plot)
 }
 
@@ -40,13 +46,15 @@ plot_bar_Q38 <- function(data) {
     mutate(freq = n / sum(n)) %>% 
     select(-n)
   
-  p <- ggplot(data_tmp, aes(x=question,y=freq, fill=factor(level, levels=c("definitely do this","probably do this",
-                                                                    "probably not do this" ,"definitely not do this")))) +
+  p <- ggplot(data_tmp, aes(x=question,y=freq, fill=factor(level))) +
     geom_bar(stat = "identity", position="stack") + ggtitle("Responses to question 38") +
     scale_fill_manual(name = "Would you... ",values=c("olivedrab", "olivedrab3", "firebrick2","red4")) +
-      geom_text(aes(label=paste0(sprintf("%.0f", freq*100),"%")),position=position_stack(vjust=0.5))  +
-    scale_y_continuous(labels = percent_format()) +  theme(legend.position = "right", legend.title=element_text(size=9)) +
-    theme(axis.text.x = element_text(size=9,angle = 90))
+    geom_text(aes(label=paste0(sprintf("%.0f", freq*100),"%")),position=position_stack(vjust=0.5))  +
+    scale_y_continuous(labels = percent_format(),expand = c(0, 0)) +
+    theme_bw() + 
+    theme(legend.position="none",panel.border = element_blank(), panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + 
+    scale_x_discrete(labels = c('A','B','C','D'))
   return(p)
 }
 
