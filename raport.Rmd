@@ -14,7 +14,7 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 library(ggplot2)
-library(gridExtra)
+#library(gridExtra)
 library(scales)
 library(grid)
 library(ggpubr)
@@ -22,7 +22,12 @@ source("./functions.R")
 
 ```
 
+#Introduction
+In this report we study how teenagers deal with broken technology (mobile phones). We observe differences between countries and chcek if there are any differences between gender within countries.
+
+
 ```{r, echo=FALSE,message=FALSE, warning=FALSE, results='asis'}
+
 pisa <- PISA2012lite::student2012
 countries <- unique(pisa$CNT)
 plots <- list()
